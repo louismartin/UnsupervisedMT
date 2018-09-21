@@ -435,7 +435,7 @@ class Decoder(nn.Module):
         # check inputs
         assert type(lang_id) is int
         assert latent.size() == (x_len.max(), x_len.size(0), self.emb_dim)
-        assert (sample is True) ^ (temperature is None)
+        assert (sample is True) != (temperature is None)
 
         # source / target
         n_words = self.n_words[lang_id]
@@ -808,7 +808,7 @@ def build_attention_model(params, data, cuda=True):
             lm.cuda()
 
         # initialize the model with pretrained embeddings
-        assert not (getattr(params, 'cpu_thread', False)) ^ (data is None)
+        assert (getattr(params, 'cpu_thread', False)) == (data is None)
         if data is not None:
             initialize_embeddings(encoder, decoder, params, data)
 

@@ -207,7 +207,7 @@ def load_back_data(params, data):
     """
     Load back-parallel data.
     """
-    assert not (len(params.back_dataset) == 0) ^ (params.n_back == 0)
+    assert (len(params.back_dataset) == 0) == (params.n_back == 0)
 
     for (lang1, lang2), (src_path, tgt_path) in params.back_dataset.items():
 
@@ -257,7 +257,7 @@ def load_mono_data(params, data):
     """
     Load monolingual data.
     """
-    assert not (len(params.mono_dataset) == 0) ^ (params.n_mono == 0)
+    assert (len(params.mono_dataset) == 0) == (params.n_mono == 0)
     if len(params.mono_dataset) == 0:
         return
 
@@ -318,7 +318,7 @@ def check_all_data_params(params):
 
     # check monolingual datasets
     params.mono_dataset = {k: v for k, v in [x.split(':') for x in params.mono_dataset.split(';') if len(x) > 0]}
-    assert not (len(params.mono_dataset) == 0) ^ (params.n_mono == 0)
+    assert (len(params.mono_dataset) == 0) == (params.n_mono == 0)
     if len(params.mono_dataset) > 0:
         assert type(params.mono_dataset) is dict
         assert all(lang in params.langs for lang in params.mono_dataset.keys())
@@ -333,7 +333,7 @@ def check_all_data_params(params):
     assert all(len(k.split('-')) == 2 for k in params.para_dataset.keys())
     assert all(len(v.split(',')) == 3 for v in params.para_dataset.values())
     params.para_dataset = {tuple(k.split('-')): tuple(v.split(',')) for k, v in params.para_dataset.items()}
-    assert not (params.n_para == 0) ^ (all(v[0] == '' for v in params.para_dataset.values()))
+    assert (params.n_para == 0) == (all(v[0] == '' for v in params.para_dataset.values()))
     for (lang1, lang2), (train_path, valid_path, test_path) in params.para_dataset.items():
         assert lang1 < lang2 and lang1 in params.langs and lang2 in params.langs
         assert train_path == '' or os.path.isfile(train_path.replace('XX', lang1))
@@ -346,7 +346,7 @@ def check_all_data_params(params):
     # check back-parallel datasets
     params.back_dataset = {k: v for k, v in [x.split(':') for x in params.back_dataset.split(';') if len(x) > 0]}
     assert type(params.back_dataset) is dict
-    assert not (len(params.back_dataset) == 0) ^ (params.n_back == 0)
+    assert (len(params.back_dataset) == 0) == (params.n_back == 0)
     assert all(len(k.split('-')) == 2 for k in params.back_dataset.keys())
     assert all(len(v.split(',')) == 2 for v in params.back_dataset.values())
     params.back_dataset = {
@@ -456,12 +456,12 @@ def check_all_data_params(params):
     assert params.vocab_min_count == 0 or params.vocab_min_count >= 0 and len(params.vocab) > 0
 
     # check coefficients
-    assert not (params.lambda_dis == "0") ^ (params.n_dis == 0)
-    assert not (params.lambda_xe_mono == "0") ^ (len(params.mono_directions) == 0)
-    assert not (params.lambda_xe_para == "0") ^ (len(params.para_directions) == 0)
-    assert not (params.lambda_xe_back == "0") ^ (len(params.back_directions) == 0)
-    assert not (params.lambda_xe_otfd == "0") ^ (len([True for _, lang2, lang3 in params.pivo_directions if lang2 != lang3]) == 0)
-    assert not (params.lambda_xe_otfa == "0") ^ (len([True for _, lang2, lang3 in params.pivo_directions if lang2 == lang3]) == 0)
+    assert (params.lambda_dis == "0") == (params.n_dis == 0)
+    assert (params.lambda_xe_mono == "0") == (len(params.mono_directions) == 0)
+    assert (params.lambda_xe_para == "0") == (len(params.para_directions) == 0)
+    assert (params.lambda_xe_back == "0") == (len(params.back_directions) == 0)
+    assert (params.lambda_xe_otfd == "0") == (len([True for _, lang2, lang3 in params.pivo_directions if lang2 != lang3]) == 0)
+    assert (params.lambda_xe_otfa == "0") == (len([True for _, lang2, lang3 in params.pivo_directions if lang2 == lang3]) == 0)
 
     # max length / max vocab / sentence noise
     assert params.max_len > 0

@@ -327,7 +327,7 @@ class Decoder(nn.Module):
         latent = encoded.dec_input
         is_cuda = latent.is_cuda
         assert type(lang_id) is int
-        assert (sample is True) ^ (temperature is None)
+        assert (sample is True) != (temperature is None)
         one_hot = None  # [] if temperature is not None else None
         n_words = self.n_words[lang_id]
         emb_layer = self.embeddings[lang_id]
@@ -447,7 +447,7 @@ def build_seq2seq_model(params, data, cuda=True):
             lm.cuda()
 
         # initialize the model with pretrained embeddings
-        assert not (getattr(params, 'cpu_thread', False)) ^ (data is None)
+        assert (getattr(params, 'cpu_thread', False)) == (data is None)
         if data is not None:
             initialize_embeddings(encoder, decoder, params, data)
 

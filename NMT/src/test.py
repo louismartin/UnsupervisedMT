@@ -117,9 +117,9 @@ def test_sharing(encoder, decoder, lm, params):
     #
     # language model
     #
-    assert (not (lm is None) ^ (params.lm_after == params.lm_before == 0 and
-                                params.lm_share_enc == params.lm_share_dec == 0 and
-                                params.lm_share_emb is False and params.lm_share_proj is False))
+    assert ((lm is None) == (params.lm_after == params.lm_before == 0 and
+                             params.lm_share_enc == params.lm_share_dec == 0 and
+                             params.lm_share_emb is False and params.lm_share_proj is False))
     if lm is not None:
         assert lm.use_lm_enc or lm.use_lm_dec
 

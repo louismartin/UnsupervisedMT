@@ -279,7 +279,7 @@ class TransformerDecoder(nn.Module):
         # check inputs
         assert type(lang_id) is int
         assert latent.size() == (x_len.max(), x_len.size(0), self.emb_dim)
-        assert (sample is True) ^ (temperature is None)
+        assert (sample is True) != (temperature is None)
 
         # initialize generated sentences batch
         slen, bs = latent.size(0), latent.size(1)
@@ -341,7 +341,7 @@ class TransformerDecoder(nn.Module):
         # check inputs
         assert type(lang_id) is int
         # assert latent.size() == (x_len.max(), x_len.size(0) * beam_size, self.emb_dim)
-        assert (sample is True) ^ (temperature is None)
+        assert (sample is True) != (temperature is None)
         assert temperature is None, 'not supported'
 
         generator = SequenceGenerator(
@@ -410,8 +410,8 @@ class TransformerEncoderLayer(nn.Module):
         return x
 
     def maybe_layer_norm(self, i, x, before=False, after=False):
-        assert before ^ after
-        if after ^ self.normalize_before:
+        assert before != after
+        if after != self.normalize_before:
             return self.layer_norms[i](x)
         else:
             return x
@@ -470,8 +470,8 @@ class TransformerDecoderLayer(nn.Module):
         return x, attn
 
     def maybe_layer_norm(self, i, x, before=False, after=False):
-        assert before ^ after
-        if after ^ self.normalize_before:
+        assert before != after
+        if after != self.normalize_before:
             return self.layer_norms[i](x)
         else:
             return x

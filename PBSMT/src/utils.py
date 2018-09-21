@@ -24,7 +24,7 @@ def get_translations(src_emb, tgt_emb, src_avg_dist, tgt_avg_dist, n_translate, 
     """
     Get translations.
     """
-    assert not ((src_avg_dist is None) ^ (tgt_avg_dist is None))
+    assert ((src_avg_dist is None) == (tgt_avg_dist is None))
     translations = []
     for k, i in enumerate(range(0, src_emb.size(0), bs)):
         if k % 50 == 0:
